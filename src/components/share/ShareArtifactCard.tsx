@@ -13,9 +13,13 @@ export function ShareArtifactCard(props: {
   quote: string;
   audioUrl: string;
   mintUrl: string;
+  /** NFT `image` from metadata (often an SVG data URI). */
+  imageUrl?: string;
+  /** Small uppercase label above the title (default: Voice Seed). */
+  badgeLabel?: string;
   className?: string;
 }) {
-  const { speaker, quote, audioUrl, mintUrl, className } = props;
+  const { speaker, quote, audioUrl, mintUrl, imageUrl, badgeLabel, className } = props;
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -29,7 +33,19 @@ export function ShareArtifactCard(props: {
       )}
     >
       <div className="relative z-10">
-        <p className="text-[10px] uppercase tracking-[0.35em] text-emerald-500/90">Voice Seed</p>
+        {imageUrl && (
+          <div className="mb-5 overflow-hidden rounded-xl border border-emerald-500/25 bg-black/30 shadow-inner">
+            {/* eslint-disable-next-line @next/next/no-img-element -- data URIs & IPFS gateways */}
+            <img
+              src={imageUrl}
+              alt=""
+              className="aspect-square w-full object-cover"
+            />
+          </div>
+        )}
+        <p className="text-[10px] uppercase tracking-[0.35em] text-emerald-500/90">
+          {badgeLabel ?? "Voice Seed"}
+        </p>
         <h3 className="mt-2 font-display text-2xl font-semibold text-emerald-50">{speaker}</h3>
         <blockquote className="mt-4 border-l-2 border-emerald-500/50 pl-4 text-sm italic leading-relaxed text-zinc-300">
           “{quote}”

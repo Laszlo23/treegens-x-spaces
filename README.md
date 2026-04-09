@@ -2,9 +2,24 @@
 
 **Repository:** [github.com/Laszlo23/treegens-x-spaces](https://github.com/Laszlo23/treegens-x-spaces)
 
-**Treegens X Spaces** is a Next.js mini-app that turns **X (Twitter) Spaces** into collectible **Voice Seeds** — ERC-721 NFTs on **Base** with audio and metadata on **IPFS**. Users join a Space, complete a participation window, capture a short voice moment, mint on-chain, and share to **X** and **Farcaster**.
+[![CI](https://github.com/Laszlo23/treegens-x-spaces/actions/workflows/ci.yml/badge.svg)](https://github.com/Laszlo23/treegens-x-spaces/actions/workflows/ci.yml)
+
+**Treegens X Spaces** is a Next.js mini-app that turns **X (Twitter) Spaces** into collectible **Voice Seeds** — ERC-721 NFTs on **Base** with audio, **deterministic SVG artwork**, and metadata on **IPFS**. Users join a Space, complete a participation window, capture a short voice moment, mint on-chain, and share to **X** and **Farcaster**. Top collectors can mint **Engagement Award** NFTs from the Leaderboard.
 
 Designed as a **forest-themed** community experience: bottom navigation (Profile, Space, Leaderboard, Tasks), **Privy** login (Farcaster + wallets), and optional **X API v2** integration for real Space metadata when credentials are configured.
+
+---
+
+## Grant & reviewers (quick brief)
+
+| Item | Detail |
+|------|--------|
+| **What** | Open-source app + **VoiceSeed** ERC-721 on Base; IPFS via Pinata; optional X Spaces API. |
+| **License** | [MIT](LICENSE) (app + contract SPDX). |
+| **Quality gate** | `npm run check` = lint + `tsc` + production build; **GitHub Actions** runs the same plus `hardhat compile`. |
+| **Security** | [SECURITY.md](SECURITY.md) — audits, secrets, reporting. |
+| **Contributing** | [CONTRIBUTING.md](CONTRIBUTING.md). |
+| **Live demo** | Deploy with Vercel (or similar); set env vars from [Environment variables](#environment-variables). |
 
 ---
 
@@ -16,7 +31,7 @@ Designed as a **forest-themed** community experience: bottom navigation (Profile
 | **Participation** | Tab-visible timer toward a **15-minute** gate; unlocks minting for that Space session (persisted per Space id). |
 | **Tasks** | Generates demo audio, uploads **WAV + JSON** to IPFS via **Pinata** (server routes), mints **`mintSeed`** on the **VoiceSeed** contract. |
 | **Profile** | Farcaster / wallet identity plus a **gallery** of indexed Voice Seeds (local storage + chain events). |
-| **Leaderboard** | Ranks **speakers** by how often they appear in minted metadata. |
+| **Leaderboard** | Ranks **speakers** by minted metadata; **top collectors** can mint **Engagement Award** NFTs (visual + audio metadata). |
 | **Share** | Per-token share page with **Open Graph** image and intent links for X and Farcaster. |
 
 ---
@@ -57,7 +72,7 @@ flowchart TB
 
 ## Prerequisites
 
-- **Node.js 18+** and npm  
+- **Node.js** — use **20 LTS** (see [`.nvmrc`](.nvmrc); `engines` in `package.json` requires ≥ 18.18) and npm  
 - **Privy** app id ([dashboard](https://dashboard.privy.io)) — enable Farcaster + Ethereum, add **Base Sepolia** and/or **Base mainnet** to allowed chains  
 - **Pinata** JWT with pinning permissions (for real IPFS uploads)  
 - **Deployer wallet** with ETH on **Base Sepolia** or **Base** for contract deploy  
@@ -73,6 +88,8 @@ cd treegens-x-spaces
 cp .env.example .env
 # Edit .env — see Environment variables below (never commit .env)
 npm install
+# Optional: verify lint + types + production build (same as CI)
+npm run check
 npm run dev
 ```
 
@@ -152,6 +169,8 @@ ABI for the app lives at [`src/lib/abis/VoiceSeed.json`](src/lib/abis/VoiceSeed.
 | `npm run dev` | Development server |
 | `npm run build` / `npm start` | Production |
 | `npm run lint` | ESLint |
+| `npm run typecheck` | `tsc --noEmit` |
+| `npm run check` | `lint` + `typecheck` + `build` (local/CI gate) |
 | `npm run compile` | Hardhat compile |
 | `npm run deploy:base-sepolia` | Deploy to Base Sepolia |
 | `npm run deploy:base` | Deploy to Base mainnet |
@@ -186,7 +205,8 @@ public/             # Static assets (e.g. logo)
 
 - Do **not** commit `.env` or private keys.  
 - **Pinata** and **X** tokens are **server-only**.  
-- Review [Privy](https://docs.privy.io/) and [Pinata](https://docs.pinata.cloud/) docs for key rotation and scopes.
+- Review [Privy](https://docs.privy.io/) and [Pinata](https://docs.pinata.cloud/) docs for key rotation and scopes.  
+- See [SECURITY.md](SECURITY.md) for audits, dependency notes, and vulnerability reporting.
 
 ---
 

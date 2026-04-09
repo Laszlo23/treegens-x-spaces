@@ -1,3 +1,4 @@
+import { isEngagementAwardMetadata } from "@/lib/engagement-metadata";
 import type { IndexedSeed } from "./seed-index";
 import type { VoiceSeedMetadata } from "./metadata";
 
@@ -10,6 +11,7 @@ function speakerFromMetadata(m: VoiceSeedMetadata | null | undefined): string | 
 export function rankSpeakers(seeds: IndexedSeed[]): { speaker: string; count: number }[] {
   const map = new Map<string, number>();
   for (const s of seeds) {
+    if (isEngagementAwardMetadata(s.metadata ?? undefined)) continue;
     const sp = speakerFromMetadata(s.metadata) || s.speaker;
     if (!sp) continue;
     map.set(sp, (map.get(sp) || 0) + 1);

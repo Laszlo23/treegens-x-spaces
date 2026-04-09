@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { EngagementAwardPanel } from "@/components/leaderboard/EngagementAwardPanel";
 import { SAMPLE_LEADERBOARD_ROWS } from "@/lib/community-sample";
 import { rankSpeakers } from "@/lib/leaderboard";
 import { loadMergedSeeds } from "@/lib/seeds-loader";
@@ -88,6 +89,10 @@ export function LeaderboardTab() {
           ))}
         </ol>
       )}
+
+      <div className="border-t border-emerald-500/10 pt-8">
+        <EngagementAwardPanel />
+      </div>
     </div>
   );
 }

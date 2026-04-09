@@ -85,6 +85,16 @@ export function GalleryTab({ embedded = false }: GalleryTabProps) {
               aria-hidden
             />
             <div className="relative z-10">
+              {seed.metadata?.image && (
+                <div className="mb-4 overflow-hidden rounded-xl border border-emerald-500/20 bg-black/40">
+                  {/* eslint-disable-next-line @next/next/no-img-element -- data URIs & IPFS */}
+                  <img
+                    src={seed.metadata.image}
+                    alt=""
+                    className="aspect-square w-full object-cover"
+                  />
+                </div>
+              )}
               <p className="font-mono text-xs text-emerald-500/80">#{seed.tokenId}</p>
               <h3 className="mt-1 font-display text-lg text-zinc-50">
                 {seed.metadata?.name || `Voice Seed #${seed.tokenId}`}

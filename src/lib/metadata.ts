@@ -1,3 +1,4 @@
+import { buildVoiceSeedImageDataUri } from "@/lib/nft-visual";
 import type { SpaceMeta } from "./spaces";
 
 /**
@@ -20,26 +21,6 @@ export type VoiceSeedMetadata = {
   animation_url: string;
   attributes: { trait_type: string; value: string }[];
 };
-
-/** Inline SVG “seed” graphic as a data URI — no separate image upload required for demos. */
-export function seedImageDataUri(): string {
-  const svg = encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-      <defs>
-        <radialGradient id="g" cx="50%" cy="40%" r="60%">
-          <stop offset="0%" stop-color="#d5e26b"/>
-          <stop offset="100%" stop-color="#3d4620"/>
-        </radialGradient>
-        <filter id="b"><feGaussianBlur stdDeviation="2"/></filter>
-      </defs>
-      <rect width="200" height="200" fill="#0a0f0d"/>
-      <ellipse cx="100" cy="105" rx="48" ry="64" fill="url(#g)" filter="url(#b)"/>
-      <ellipse cx="100" cy="72" rx="14" ry="20" fill="#e2eca8" opacity="0.95"/>
-      <circle cx="100" cy="100" r="6" fill="#ecfdf5" opacity="0.35"/>
-    </svg>`
-  );
-  return `data:image/svg+xml;charset=utf-8,${svg}`;
-}
 
 export function buildVoiceSeedMetadata(input: {
   space: SpaceMeta;
@@ -72,7 +53,10 @@ export function buildVoiceSeedMetadata(input: {
   return {
     name,
     description,
-    image: seedImageDataUri(),
+    image: buildVoiceSeedImageDataUri({
+      speakerName: input.speakerName,
+      spaceTitle: input.space.title,
+    }),
     animation_url: input.audioGatewayUrl,
     attributes,
   };

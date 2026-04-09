@@ -33,6 +33,7 @@ export function CaptureTabPrivy() {
     audioUrl: string;
     speaker: string;
     quote: string;
+    imageUrl: string;
   } | null>(null);
 
   useEffect(() => {
@@ -110,6 +111,7 @@ export function CaptureTabPrivy() {
         audioUrl: audioGatewayUrl,
         speaker: speaker || "Speaker",
         quote: quote || "—",
+        imageUrl: metaJson.image,
       });
       resetAfterMint();
     } catch (e) {
@@ -249,6 +251,7 @@ export function CaptureTabPrivy() {
             quote={lastMint.quote}
             audioUrl={lastMint.audioUrl}
             mintUrl={mintLink}
+            imageUrl={lastMint.imageUrl}
           />
           <div className="flex flex-wrap gap-3">
             <a

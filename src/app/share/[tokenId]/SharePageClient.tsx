@@ -11,13 +11,18 @@ export function SharePageClient(props: {
   owner: string | null;
   tokenId: string;
 }) {
-  const speaker =
-    props.meta.attributes?.find((a) => a.trait_type === "Speaker")?.value || "Speaker";
+  const isEngagement = Boolean(props.meta.name?.startsWith("Engagement Award"));
+  const speakerAttr =
+    props.meta.attributes?.find((a) => a.trait_type === "Speaker")?.value || "";
+  const headline =
+    isEngagement && props.meta.name ? props.meta.name : speakerAttr || "Speaker";
   const quote =
     props.meta.attributes?.find((a) => a.trait_type === "Quote")?.value ||
     props.meta.description.slice(0, 200);
   const audio = props.meta.animation_url;
   const mintUrl = sharePageUrl(props.tokenId);
+  const badgeLabel = isEngagement ? "Engagement award" : "Voice Seed";
+  const shareBlurb = isEngagement ? `Treegens · ${headline}` : `Voice Seed artifact · ${headline}`;
 
   return (
     <div className="mx-auto max-w-lg space-y-8 px-4 py-12">
@@ -30,10 +35,12 @@ export function SharePageClient(props: {
 
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
         <ShareArtifactCard
-          speaker={speaker}
+          speaker={headline}
           quote={quote}
           audioUrl={audio}
           mintUrl={mintUrl}
+          imageUrl={props.meta.image}
+          badgeLabel={badgeLabel}
         />
       </motion.div>
 
@@ -47,7 +54,7 @@ export function SharePageClient(props: {
       <div className="flex flex-wrap gap-3">
         <a
           href={twitterIntentUrl({
-            text: `Voice Seed artifact · ${speaker}`,
+            text: shareBlurb,
             url: mintUrl,
           })}
           target="_blank"
@@ -57,7 +64,7 @@ export function SharePageClient(props: {
           Share on X
         </a>
         <a
-          href={warpcastComposeUrl({ text: `Voice Seed · ${speaker}`, embeds: [mintUrl] })}
+          href={warpcastComposeUrl({ text: shareBlurb, embeds: [mintUrl] })}
           target="_blank"
           rel="noopener noreferrer"
           className="rounded-full border border-zinc-600 bg-zinc-900 px-4 py-2 text-sm text-zinc-200 hover:border-emerald-500/50"
