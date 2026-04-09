@@ -1,5 +1,7 @@
 # Treegens X Spaces
 
+**Repository:** [github.com/Laszlo23/treegens-x-spaces](https://github.com/Laszlo23/treegens-x-spaces)
+
 **Treegens X Spaces** is a Next.js mini-app that turns **X (Twitter) Spaces** into collectible **Voice Seeds** — ERC-721 NFTs on **Base** with audio and metadata on **IPFS**. Users join a Space, complete a participation window, capture a short voice moment, mint on-chain, and share to **X** and **Farcaster**.
 
 Designed as a **forest-themed** community experience: bottom navigation (Profile, Space, Leaderboard, Tasks), **Privy** login (Farcaster + wallets), and optional **X API v2** integration for real Space metadata when credentials are configured.
@@ -66,7 +68,7 @@ flowchart TB
 ## Quick start
 
 ```bash
-git clone <your-repo-url> treegens-x-spaces
+git clone https://github.com/Laszlo23/treegens-x-spaces.git
 cd treegens-x-spaces
 cp .env.example .env
 # Edit .env — see Environment variables below (never commit .env)
